@@ -1,12 +1,7 @@
 const express = require('express');
 const app = express();
-const model = require('../models')({
-    dbname: "palette",
-    username: "palette",
-    password: "palette123",
-    host: "127.0.0.1",
-    type: "mysql"
-});
+const conf = require('./config.js');
+const model = require('../models')(conf);
 
 app.get('/', (req, res) => {
     res.send("test");

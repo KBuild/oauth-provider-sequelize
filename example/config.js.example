@@ -1,0 +1,14 @@
+/*
+ * this file is example of configure
+ * of node-oauth-sequelize example code
+ * if you want to run it, then change
+ * this config file and save as config.js
+ */
+
+module.exports = {
+    dbname: "thedb",
+    username: "imuser",
+    password: "thisispassword",
+    host: "127.0.0.1",
+    type: "mysql"
+}
