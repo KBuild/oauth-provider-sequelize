@@ -1,0 +1,22 @@
+{
+  "name": "oauth-provider-sequelize",
+  "version": "0.0.1",
+  "description": "auth-provideroauth-provider",
+  "main": "oauth.js",
+  "directories": {
+    "example": "example"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KBuild/oauth-provider-sequelize.git"
+  },
+  "author": "",
+  "license": "Proprietary",
+  "bugs": {
+    "url": "https://github.com/KBuild/oauth-provider-sequelize/issues"
+  },
+  "homepage": "https://github.com/KBuild/oauth-provider-sequelize#readme"
+}
