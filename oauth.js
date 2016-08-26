@@ -24,14 +24,13 @@ let crypto = require('crypto');
     * 
     * @apiSampleRequest /api/token
     */
-
-let oauth = (function () {
-    function oauth(options) {
+class oauth {
+     constructor(options) {
         //in order to call it without 'new'
         if (!(this instanceof oauth))
             return new oauth(options);
 
-        if (!options.dbinfo)
+        if (options === undefined || options.dbinfo === undefined)
             throw new Error('dbinfo not specified in config');
 
         let defaults = {
@@ -45,7 +44,7 @@ let oauth = (function () {
         this.config.models = models(options.dbinfo);
     }
 
-    oauth.prototype.createUser = function (user, pass, roles, data, callback) {
+    createUser(user, pass, roles, data, callback) {
         if (!roles || roles.length == 0)
             roles = ['admin'];
 
@@ -71,12 +70,12 @@ let oauth = (function () {
             data: data
         });
 
-        dbuser.save(function (err, data) {
+        dbuser.save( (err, data) => {
             return callback(err, data);
         });
     };
 
-    oauth.prototype.registerClient = function (name, key, secret, type, platform, data, dev_token, callback) {
+    registerClient(name, key, secret, type, platform, data, dev_token, callback) {
         if (!name || !key || !secret || !type || !platform)
             callback('All parameters are required');
         let self = this;
@@ -89,7 +88,7 @@ let oauth = (function () {
             data: data
         });
 
-        app.save(function (err, data) {
+        app.save( (err, data) => {
             if (err)
                 return callback('Error updating applications');
 
@@ -105,7 +104,7 @@ let oauth = (function () {
                     "applicationID": data._id
                 });
 
-                self.config.models.accessToken.collection.insert(tokens, function (err, data) {
+                self.config.models.accessToken.collection.insert(tokens,  (err, data) => {
                     return callback(err, data);
                 });
             } else {
@@ -115,32 +114,31 @@ let oauth = (function () {
     };
     
     //express
-    oauth.prototype.authorization = function (req, res, next) {
+    authorization(req, res, next) {
         let self = this;
-        return function (req, res, next) {
+        return  (req, res, next) => {
             filter(self.config, req, res, next);
         }
     };
 
-    oauth.prototype.token = function () {
+    token() {
         let self = this;
-
-        return function (req, res, next) {
+        return  (req, res, next) => {
             token(self.config, req, res, next);
         }
     };
     
     //statics
     //no config available
-    oauth.authorize = function (scopes) {
+    static authorize(scopes) {
         if (scopes && typeof (scopes) == 'string')
             scopes = [scopes];
 
-        return function (req, res, next) {
+        return  (req, res, next) => {
             let context_scopes = res.locals.access_token.scopes;
             if (scopes && scopes.length > 0) {
                 //check if at least one context_scope is in requested scopes
-                let scope_intersect = context_scopes.filter(function (x) {
+                let scope_intersect = context_scopes.filter((x) => {
                     return scopes.indexOf(x) != -1;
                 });
                 if (scope_intersect.length == 0)
@@ -149,8 +147,6 @@ let oauth = (function () {
             next();
         }
     };
-
-    return oauth;
-})();
+}
 
 module.exports = oauth;

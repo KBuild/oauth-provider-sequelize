@@ -18,5 +18,10 @@
   "bugs": {
     "url": "https://github.com/KBuild/oauth-provider-sequelize/issues"
   },
-  "homepage": "https://github.com/KBuild/oauth-provider-sequelize#readme"
+  "homepage": "https://github.com/KBuild/oauth-provider-sequelize#readme",
+  "dependencies": {
+    "nodemon": "^1.10.2",
+    "pg": "^6.1.0",
+    "pg-hstore": "^2.3.2"
+  }
 }
