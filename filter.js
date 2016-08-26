@@ -8,15 +8,15 @@
     
     //write to log
     let userHostAddress = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    let log = new config.models.log({
+    let log = config.models.log.create({
         timestamp: new Date(),
         userHostAddress: userHostAddress,
         url: req.originalUrl,
         requestVerb: req.method,
-        headers: req.headers,
+        headers: JSON.stringify(req.headers),
         requestBody: JSON.stringify(req.body)
     });
-    log.save(function (err) {
+    log.catch(function (err) {
         if (err)
             return res.status(500).json(err);
 
@@ -26,7 +26,8 @@
         if (req.query['access_token']) {
             access_token = req.query['access_token'];
         }
-        else if (authHeader && authHeader.toLowerCase().indexOf('bearer') != -1) {
+        else if (authHeader &&
+                 authHeader.toLowerCase().indexOf('bearer') != -1) {
             let _t = authHeader.split(' ');
             if (_t.length == 2 && _t[0].toLowerCase() == 'bearer')
                 access_token = _t[1].toLowerCase().trim();
